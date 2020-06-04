@@ -4,9 +4,6 @@ $newfile =$_FILES ['text']['name'];
 if (copy($_FILES['text']['tmp_name'],$newfile)){
     echo "Операцаия прошла успешно" . PHP_EOL;
 }
-else if (empty($text_2)){
-    echo "Операцаия прошла успешно" . PHP_EOL;
-}
 else {
     echo "Возникла ошибка при загрузке" . PHP_EOL;
 }
@@ -26,8 +23,11 @@ $entryword = print_r($result,true);//вывод инфо о переменной
 
 touch ("file.csv"); // создание нового файла
 $file = fopen('file.csv','w'); //Открыте файла
-
-fputcsv($file,[$entryword,"Всего слов",$wordcount],"=>"); //Форматирует строку в виде CSV
+//вывод
+foreach ($result as $word => $count) {
+    fputcsv($file, [$word, $count]);
+}
+fputcsv($file, ['всего слов:', $wordcount]); //Форматирует строку в виде CSV
 fclose($file);// закрытие файла
 // перемещение файла
 mkdir ("texts"); // создание новой директорий
@@ -51,9 +51,13 @@ $entryword = print_r($result,true);
 
 touch ("textarea.csv");
 $file = fopen('textarea.csv','w');
-
-fputcsv($file,[$entryword,"Всего слов",$wordcount],"=>");
+//вывод
+foreach ($result as $word => $count) {
+    fputcsv($file, [$word, $count]);
+}
+fputcsv($file, ['всего слов:', $wordcount]);
 fclose($file);
+
 //перемещение файла
 mkdir ("texts"); // создание новой директорий
 if (rename("textarea.csv", "texts/textarea.csv")) {
